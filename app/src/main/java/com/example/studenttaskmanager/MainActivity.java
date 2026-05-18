@@ -1,38 +1,44 @@
 package com.example.studenttaskmanager;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText taskInput;
-    Button addButton;
-    TextView resultText;
+    Button openAddTaskButton;
+    TextView homeResultText;
+
+    public static final int ADD_TASK_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        taskInput = findViewById(R.id.taskInput);
-        addButton = findViewById(R.id.addButton);
-        resultText = findViewById(R.id.resultText);
+        openAddTaskButton = findViewById(R.id.openAddTaskButton);
+        homeResultText = findViewById(R.id.homeResultText);
 
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String task = taskInput.getText().toString();
-
-                if (task.isEmpty()) {
-                    resultText.setText("Please enter a task first.");
-                } else {
-                    resultText.setText("Added task: " + task);
-                }
-            }
+        openAddTaskButton.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, AddTaskActivity.class);
+            startActivityForResult(intent, ADD_TASK_REQUEST_CODE);
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ADD_TASK_REQUEST_CODE && resultCode == RESULT_OK) {
+            String taskName = data.getStringExtra("taskName");
+            String subject = data.getStringExtra("subject");
+            boolean important = data.getBooleanExtra("important", false);
+
+            String status = important ? "Important" : "Normal";
+
+            homeResultText.setText("Task: " + taskName + "\nSubject: " + subject + "\nStatus: " + status);
+        }
     }
 }
