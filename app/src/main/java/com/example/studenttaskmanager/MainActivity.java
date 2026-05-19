@@ -32,6 +32,11 @@ public class MainActivity extends AppCompatActivity {
         taskListView = findViewById(R.id.taskListView);
 
         taskList = new ArrayList<>();
+
+        taskList.add(new Task("Study Android Part 1", "Mobile Development", false));
+        taskList.add(new Task("Practice Activities and Intents", "Android Core Elements", true));
+        taskList.add(new Task("Create ListView layout", "Lists and Images", false));
+
         taskAdapter = new TaskAdapter();
         taskListView.setAdapter(taskAdapter);
 

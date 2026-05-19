@@ -24,9 +24,18 @@ public class AddTaskActivity extends AppCompatActivity {
         saveTaskButton = findViewById(R.id.saveTaskButton);
 
         saveTaskButton.setOnClickListener(view -> {
-            String taskName = taskNameInput.getText().toString();
-            String subject = subjectInput.getText().toString();
+            String taskName = taskNameInput.getText().toString().trim();
+            String subject = subjectInput.getText().toString().trim();
             boolean important = importantCheckBox.isChecked();
+
+            if (taskName.isEmpty()) {
+                taskNameInput.setError("Task name is required");
+                return;
+            }
+
+            if (subject.isEmpty()) {
+                subject = "General";
+            }
 
             Intent resultIntent = new Intent();
             resultIntent.putExtra("taskName", taskName);
